@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+.filepond--root .filepond--credits[style]{
+  display: none!important;
+}
+body{
+  background-color: #fefefe;
+}
