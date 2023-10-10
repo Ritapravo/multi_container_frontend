@@ -19,19 +19,22 @@ import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import { base_url } from '../constants';
+import Editor from '../MdEditor';
+import { Description } from '@mui/icons-material';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 const InstructorPage = () => {
   const [labName, setLabName] = useState('');
+  const [labDescription, setLabDescription] = useState('');
   const [dockerComposeFile, setDockerComposeFile] = useState([]);
   const [mountFiles, setMountFiles] = useState([]);
   const [graderFiles, setGraderFiles] = useState(null);
   const [graderConfigFile, setGraderConfigFile] = useState(null);
 
   const sizes = {
-    sm : '12',
+    sm : '6',
     xs : '12'
   }
 
@@ -40,10 +43,12 @@ const InstructorPage = () => {
 
     let formData = new FormData();
     formData.append('lab', labName);
+    formData.append('labDescription', labDescription);
     if (dockerComposeFile) {
       formData.append('dockerCompose', dockerComposeFile[0]?.file);
       console.log("INSIDE==",dockerComposeFile[0]?.file);
     }
+
 
     if (mountFiles.length > 0) {
       mountFiles.forEach((file) => {
@@ -74,9 +79,8 @@ const InstructorPage = () => {
     }
   };
 
-
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="lg">
       <Paper elevation={3} style={{ padding: '20px', margin: '10px 0', border: '20px solid #c2c0c0' }}>
         <Typography variant="h4" gutterBottom style={{ textAlign: 'center' }}>
           Create New Lab
@@ -91,6 +95,11 @@ const InstructorPage = () => {
             onChange={(e) => setLabName(e.target.value)}
             className="form-group"
           />
+          <Typography variant="h6" gutterBottom>
+            Lab Description
+          </Typography>
+          <Editor field={labDescription} setField={setLabDescription}/>
+          
           <Grid container columnSpacing={5} rowSpacing={2}>
             <Grid item xs={sizes.xs} sm={sizes.sm}>
               <div style={{ margin: '10px 0' }}>
