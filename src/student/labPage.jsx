@@ -62,6 +62,7 @@ const LabPage = () => {
           text: 'Attempt your lab',
           icon: 'success',
         });
+        Navigate(`/student/lab/attempt/${params?.labId}`)
       } catch (error) {
         console.error('Error:', error);
         swal({
