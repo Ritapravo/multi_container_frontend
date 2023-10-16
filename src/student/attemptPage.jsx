@@ -29,7 +29,7 @@ import { base_url } from '../constants';
 import swal from 'sweetalert';
 
 
-const LabPage = () => {
+const AttemptPage = () => {
     const Navigate = useNavigate();
     const params = useParams();
     const mdParser = new MarkdownIt(/* Markdown-it options */);
@@ -144,4 +144,4 @@ const LabPage = () => {
     )
 }
 
-export default LabPage;
+export default AttemptPage;

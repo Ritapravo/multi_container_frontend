@@ -78,7 +78,7 @@ const StudentPage = () => {
                       {item?.name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Lizards are a widespread group of squamate 
+                      Start your Lab : {item?.name} 
                     </Typography>
                   </CardContent>
                 </CardActionArea>

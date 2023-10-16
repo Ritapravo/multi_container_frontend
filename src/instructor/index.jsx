@@ -21,6 +21,8 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import { base_url } from '../constants';
 import Editor from '../MdEditor';
 import { Description } from '@mui/icons-material';
+import swal from 'sweetalert';
+
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -30,6 +32,7 @@ const InstructorPage = () => {
   const [labDescription, setLabDescription] = useState('');
   const [dockerComposeFile, setDockerComposeFile] = useState([]);
   const [mountFiles, setMountFiles] = useState([]);
+  const [dockerfiles, setDockerfiles] = useState([]);
   const [graderFiles, setGraderFiles] = useState(null);
   const [graderConfigFile, setGraderConfigFile] = useState(null);
 
@@ -56,6 +59,12 @@ const InstructorPage = () => {
       });
     }
 
+    if (dockerfiles.length > 0) {
+      dockerfiles.forEach((file) => {
+        formData.append('dockerfiles', file?.file);
+      });
+    }
+
     if (graderFiles) {
       formData.append('graderMount', graderFiles[0]?.file);
     }
@@ -73,8 +82,18 @@ const InstructorPage = () => {
 
       // Handle the response from the backend as needed
       console.log('Response from the backend:', response.data);
+      swal({
+        title: 'Lab Created',
+        text: 'Lab Created and files uploaded successfully',
+        icon: 'success',
+      });
     } catch (error) {
       // Handle errors
+      swal({
+        title: 'ERROR',
+        text: 'Some error occured!!',
+        icon: 'error',
+      });
       console.error('Error:', error);
     }
   };
@@ -121,7 +140,7 @@ const InstructorPage = () => {
 
               <div style={{ margin: '10px 0' }}>
                 <Typography variant="h6" gutterBottom>
-                  Grader Config File
+                  Grader Instructions YML file
                 </Typography>
 
 
@@ -153,8 +172,26 @@ const InstructorPage = () => {
 
               </div>
             </Grid>
-            {/* Mounts field allowing multiple file uploads */}
+
             <Grid item xs={sizes.xs} sm={sizes.sm}>
+
+              <div style={{ margin: '10px 0' }}>
+                <Typography variant="h6" gutterBottom>
+                  Dockerfiles
+                </Typography>
+
+                <FilePond
+                  allowMultiple={true} // Allow multiple file uploads
+                  files={dockerfiles}
+                  onupdatefiles={setDockerfiles}
+                />
+              </div>
+              {/* Similar sections for other file inputs */}
+            </Grid>
+
+
+            {/* Mounts field allowing multiple file uploads */}
+            <Grid item xs={sizes.xs} sm={12}>
 
               <div style={{ margin: '10px 0' }}>
                 <Typography variant="h6" gutterBottom>
