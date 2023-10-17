@@ -40,6 +40,7 @@ const LabPage = () => {
   }
   const [labDetails, setLabDetails] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [labStart, setLabStart] = useState(false);
 
   const fetchLabs = async (e) => {
 
@@ -58,9 +59,32 @@ const LabPage = () => {
     try {
       const response = await axios.get(`${base_url}/test1/attemptLab/${params.labId}`);
       console.log('Response from the backend:', response.data);
+      setLabStart(true);
       swal({
         title: 'Lab Started',
         text: 'Attempt your lab',
+        icon: 'success',
+      });
+      // Navigate(`/student/lab/attempt/${params?.labId}`)
+    } catch (error) {
+      console.error('Error:', error);
+      swal({
+        title: 'ERROR',
+        text: 'Some error occured!!',
+        icon: 'error',
+      });
+    }
+    setLoading(false);
+  };
+
+  const evaluateLab = async (e) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${base_url}/test1/evaluateLab/${params.labId}`);
+      console.log('Response from the backend:', response.data);
+      swal({
+        title: 'evaluation results',
+        text: response.data.error===""?response.data.result: response.data.error,
         icon: 'success',
       });
       // Navigate(`/student/lab/attempt/${params?.labId}`)
@@ -89,6 +113,7 @@ const LabPage = () => {
         text: 'Successfully ended your lab',
         icon: 'success',
       });
+      setLabStart(false);
       Navigate(`/student`)
     } catch (error) {
       console.error('Error:', error);
@@ -135,10 +160,17 @@ const LabPage = () => {
           </div>
 
           <div style={{ textAlign: 'center' }}>
-            <Button disabled={loading} onClick={() => attemptLab()} variant='contained' color='success'>
+            {!labStart && <Button disabled={loading} onClick={() => attemptLab()} variant='contained' color='success'>
               {loading && <i class="fas fa-spinner fa-spin"></i>}
               {!loading && "Attempt Lab" }
-            </Button>
+            </Button>}
+            {
+              labStart &&
+              <Button disabled={loading} onClick={() => evaluateLab()} variant='contained' color='success'>
+                {loading && <i class="fas fa-spinner fa-spin"></i>}
+                {!loading && "Evaluate" }
+              </Button>
+            }
           </div>
 
 
